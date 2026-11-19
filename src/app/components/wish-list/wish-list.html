@@ -1,0 +1,49 @@
+<div class="wishlist-page">
+    <div class="wishlist-header">
+        <div>
+            <p class="eyebrow">YOUR PERSONAL COLLECTION</p>
+            <h2>My Wishlist <span>♥</span></h2>
+            <p class="subtitle">All the movies you want to watch, gathered in one place.</p>
+        </div>
+        <div class="wishlist-count">
+            <strong>{{ movieService.wishList().length }}</strong>
+            <span>{{ movieService.wishList().length === 1 ? 'MOVIE' : 'MOVIES' }}</span>
+        </div>
+    </div>
+
+    @if (movieService.wishList().length > 0) {
+        <div class="wishlist-actions">
+            <span>{{ movieService.wishList().length }} saved movie(s)</span>
+            <button class="clear-button" (click)="clearWishList()">Clear wishlist</button>
+        </div>
+        <div class="movie-grid">
+            @for (movie of movieService.wishList(); track movie.id) {
+                <article class="movie-card">
+                    <div class="poster" (click)="navigateTo(movie)" role="button" tabindex="0" (keydown.enter)="navigateTo(movie)">
+                        @if (movie.poster_path) {
+                            <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title + ' poster'">
+                        } @else {
+                            <div class="no-poster">No poster available</div>
+                        }
+                        <span class="rating">★ {{ movie.vote_average | number:'1.1-1' }}</span>
+                    </div>
+                    <div class="movie-info">
+                        <h3>{{ movie.title }}</h3>
+                        <p>{{ movie.release_date ? (movie.release_date | slice:0:4) : 'Release date unavailable' }}</p>
+                        <div class="card-actions">
+                            <button class="details-button" (click)="navigateTo(movie)">View details</button>
+                            <button class="remove-button" (click)="removeFromWishList(movie)" [attr.aria-label]="'Remove ' + movie.title + ' from wishlist'" title="Remove from wishlist">♥</button>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+    } @else {
+        <div class="empty-state">
+            <div class="empty-heart">♡</div>
+            <h3>Your wishlist is waiting</h3>
+            <p>You haven't saved any movies yet. Explore the movie collection and add your favourites here.</p>
+            <button (click)="goToMovieList()">Explore movies</button>
+        </div>
+    }
+</div>

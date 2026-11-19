@@ -1,0 +1,68 @@
+<section class="catalogue">
+    <div class="catalogue-heading">
+        <div>
+            <p class="eyebrow">DISCOVER YOUR NEXT FAVORITE</p>
+            <h2>Now Playing <span>Movies</span></h2>
+            <p class="catalogue-subtitle">Explore what's currently on the big screen.</p>
+        </div>
+        <div class="movie-total"><strong>{{ movieService.movieList().length }}</strong><span>ON THIS PAGE</span></div>
+    </div>
+
+    <div class="filter-bar">
+        <div class="filter-label"> <span>⌕</span> Refine your results</div>
+        <label>Minimum rating
+            <select [value]="minimumRating" (change)="minimumRating = +$any($event.target).value">
+                <option value="0">Any rating</option>
+                <option value="5">5+ stars</option>
+                <option value="6">6+ stars</option>
+                <option value="7">7+ stars</option>
+                <option value="8">8+ stars</option>
+            </select>
+        </label>
+        <label>Sort by
+            <select [value]="sortBy" (change)="sortBy = $any($event.target).value">
+                <option value="popular">Popularity</option>
+                <option value="rating">Top rated</option>
+                <option value="newest">Newest</option>
+                <option value="title">Title A–Z</option>
+            </select>
+        </label>
+        <button class="reset-button" (click)="minimumRating = 0; sortBy = 'popular'">Reset filters</button>
+    </div>
+
+    @if (isLoading) {
+        <div class="status-message"><div class="loader"></div><p>Loading movies...</p></div>
+    } @else if (errorMessage) {
+        <div class="status-message"><p>{{ errorMessage }}</p><button (click)="loadPage(currentPage)">Try again</button></div>
+    } @else if (filteredMovies.length === 0) {
+        <div class="status-message"><p>No movies match these filters.</p><button (click)="minimumRating = 0">Clear filters</button></div>
+    } @else {
+        <div class="container">
+            @for (movie of filteredMovies; track movie.id) {
+                <div class="movie-card" (click)="navigateTo(movie)" tabindex="0" role="button" (keydown.enter)="navigateTo(movie)">
+                    <div class="poster-container">
+                        @if (movie.poster_path) {
+                            <img [src]="'https://image.tmdb.org/t/p/w500/' + movie.poster_path" [alt]="movie.title + ' poster'">
+                        } @else {
+                            <div class="no-poster">No poster available</div>
+                        }
+                        <span class="rating">★ {{ movie.vote_average | number:'1.1-1' }}</span>
+                    </div>
+                    <div class="movie-detail">
+                        <h3>{{ movie.title }}</h3>
+                        <p>{{ movie.release_date ? (movie.release_date | slice:0:4) : 'Coming soon' }}</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <nav class="pagination" aria-label="Movie pages">
+            <button (click)="previousPage()" [disabled]="currentPage === 1">← Previous</button>
+            @for (page of pages; track page) {
+                <button class="page-number" [class.active]="page === currentPage" (click)="loadPage(page)">{{ page }}</button>
+            }
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next →</button>
+        </nav>
+        <p class="page-caption">Page {{ currentPage }} of {{ totalPages }}</p>
+    }
+</section>

@@ -1,0 +1,16 @@
+<header class="container">
+    <button class="brand" (click)="navigateToMovies()" aria-label="Go to movie list">
+        <span class="brand-mark">M</span>
+        <span>MY <strong>MOVIE-DB</strong></span>
+    </button>
+    <nav class="header-actions">
+        <button class="nav-button" (click)="navigateToMovies()">Explore</button>
+        <button class="wishlist-button" (click)="navigateToWishList()">
+            Wish List <fa-icon [icon]="faHeart" />
+            <span class="wishlist-badge">{{ movieService.wishList().length }}</span>
+        </button>
+        <button class="theme-button" (click)="toggleTheme()" [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'" [title]="isDarkMode ? 'Light mode' : 'Dark mode'">
+            <fa-icon [icon]="isDarkMode ? faSun : faMoon" />
+        </button>
+    </nav>
+</header>

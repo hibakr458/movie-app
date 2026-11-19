@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { --page-bg: #101014; --header-bg: #09090c; --card-bg: #1b1b21; --text-color: #f7f7f7; --muted-color: #aaa; --border-color: #303038; background: var(--page-bg); color: var(--text-color); transition: background .25s, color .25s; }
+body.light-theme { --page-bg: #f3f4f6; --header-bg: #202127; --card-bg: #fff; --text-color: #202127; --muted-color: #666; --border-color: #ddd; }
+button, input, select { font: inherit; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid #eacb25; outline-offset: 3px; }
+::selection { background: #eacb25; color: #111; }
